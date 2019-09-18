@@ -22,12 +22,13 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = { login: 'Joao Octavio' };
     }
 
-    loginButtonMethod = async () => {
-        var url = "getByNome/" + this.state.login
+    ButtonMethod = async () => {
+        var value = await AsyncStorage.getItem('login');
+        var url = "inscrever/" + value;
         const res = await this.FetchService.get(url);
+
         if (res === false) {
             Alert.alert(
                 "Erro durante o login",
@@ -35,93 +36,52 @@ export default class HomeContainer extends Component {
                 [{ text: "OK" }]
             );
         } else {
-            try {
-                AsyncStorage.setItem("login", this.state.login);
-                if (res[0].inscrito === false) {
-                    this.props.navigation.navigate("UserUnSubscribed");
-                } else {
-                    this.props.navigation.navigate("UserSubscribed")
-                }
+            Alert.alert(
+                "Tudo pronto!",
+                "Seu processo de inscrição já começou! Aproveite e faça a sugestão de um time para você",
+                [{ text: "OK", onPress: () => this.props.navigation.navigate("UserSubscribed") }]
 
-
-            } catch (erro) {
-                Alert.alert(
-                    "Erro durante o login",
-                    "Alguma das credenciais está incorreta",
-                    [{ text: "OK" }]
-                );
-            }
-
+            );
         }
 
     };
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.viewBackground} behavior="padding" enabled>
+            <View style={styles.viewBackground}>
+                <View style={{ flex: 1 }}>
+
+                </View>
                 <Image style={styles.Image}
-                    source={require("../../assets/logo.jpg")}
+                    source={require("../../assets/hackatonaArte.png")}
                 />
-
-                <TextInput
-                    style={styles.credentialsInput}
-                    value={this.state.text}
-                    placeholder="Seu nome como no documento de grupos"
-                    onChangeText={(login) => { this.setState({ login }) }}
-                    underlineColorAndroid="transparent"
-                >
-                </TextInput>
-
                 <View style={styles.underBackGround}>
                     <TouchableOpacity
                         style={styles.TouchableOpacity}
-                        onPress={this.loginButtonMethod}>
-                        <Text style={styles.buttonText}>AVANÇAR</Text>
+                        onPress={this.ButtonMethod}>
+                        <Text style={styles.buttonText}>INSCREVER-SE</Text>
                     </TouchableOpacity>
                 </View>
-
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     viewBackground: {
-        flex: 1,
         backgroundColor: '#256CA0',
-        flexDirection: "column",
-        justifyContent: 'space-between',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+
     },
     Image: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
+        flex: 3,
+        width: Dimensions.get("window").width * 0.9,
+        height: Dimensions.get("window").height * 0.1,
         resizeMode: 'stretch',
-    },
-    credentialsInput: {
-        alignSelf: 'center',
-        textAlign: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-        paddingBottom: 10,
-        paddingTop: 10,
-        width: Dimensions.get("window").width * 0.90,
-        backgroundColor: 'white',
-        top: Dimensions.get("window").height * 0.10,
-
-        borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
+        justifyContent: 'center',
     },
     underBackGround: {
         flex: 1,
@@ -161,5 +121,4 @@ const styles = StyleSheet.create({
         color: "white"
 
     }
-
 });
