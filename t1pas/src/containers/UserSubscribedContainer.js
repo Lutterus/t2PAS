@@ -7,10 +7,8 @@ import {
     TouchableOpacity,
     Text,
     Alert,
-    KeyboardAvoidingView
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
-import { TextInput } from "react-native-gesture-handler";
 import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
 
@@ -25,11 +23,24 @@ export default class HomeContainer extends Component {
     }
     
     teamButtonMethod = async () => {
-        
+        this.props.navigation.navigate("EditTeam")
 
     };
 
     subButtonMethod = async () => {
+        Alert.alert(
+            "Cuidado!",
+            "Você tem certeza que deseja cancelar sua inscrição?",
+            [
+                {text: "Confirmar", onPress: () =>  this.cancelSub()},
+                {text: "Cancelar"}
+            
+            ]
+
+        );
+    };
+
+    cancelSub = async () => {
         var value = await AsyncStorage.getItem('login');
         var url = "desInscrever/" + value;
         const res = await this.FetchService.get(url);
@@ -40,20 +51,15 @@ export default class HomeContainer extends Component {
                 [{ text: "OK" }]
             );
         } else {
-            Alert.alert(
-                "Tudo pronto!",
-                "Seu processo de inscrição foi cancelado, conforme solicitado",
-                [{ text: "OK", onPress: () => this.props.navigation.navigate("UserUnSubscribed") }]
-
-            );
+            this.props.navigation.navigate("UserUnSubscribed")
         }
-
-    };
+    }
 
     render() {
         return (
+           
             <View style={styles.viewBackground}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 0.25 }}>
 
                 </View>
                 <Image style={styles.Image}

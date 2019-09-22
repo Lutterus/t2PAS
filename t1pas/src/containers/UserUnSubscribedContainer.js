@@ -49,7 +49,7 @@ export default class HomeContainer extends Component {
     render() {
         return (
             <View style={styles.viewBackground}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 0.25 }}>
 
                 </View>
                 <Image style={styles.Image}

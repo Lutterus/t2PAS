@@ -13,6 +13,7 @@ import { NavigationScreenProp } from "react-navigation";
 import { TextInput } from "react-native-gesture-handler";
 import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
+import { Icon } from 'react-native-elements'
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -22,7 +23,7 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = { login: 'Joao Octavio' };
+        this.state = { login: 'Professor Professor Professor Professor' };
     }
 
     loginButtonMethod = async () => {
@@ -37,11 +38,17 @@ export default class HomeContainer extends Component {
         } else {
             try {
                 AsyncStorage.setItem("login", this.state.login);
-                if (res[0].inscrito === false) {
-                    this.props.navigation.navigate("UserUnSubscribed");
-                } else {
-                    this.props.navigation.navigate("UserSubscribed")
+                if(res[0].tipo==="Professor"){
+                    this.props.navigation.navigate("ListSubs");
+                }else{
+                    if (res[0].inscrito === false) {
+                        this.props.navigation.navigate("UserUnSubscribed");
+                    } else {
+                        this.props.navigation.navigate("UserSubscribed")
+                    }
                 }
+                
+               
 
 
             } catch (erro) {
@@ -62,15 +69,25 @@ export default class HomeContainer extends Component {
                 <Image style={styles.Image}
                     source={require("../../assets/logo.jpg")}
                 />
+                <View style={{flex:1}}>
 
-                <TextInput
-                    style={styles.credentialsInput}
-                    value={this.state.text}
-                    placeholder="Seu nome como no documento de grupos"
-                    onChangeText={(login) => { this.setState({ login }) }}
-                    underlineColorAndroid="transparent"
-                >
-                </TextInput>
+                </View>
+
+                <View style={styles.middleBackGround}>
+                    <Icon style={styles.icon}
+                        name='person'
+                        color='#00aced' />
+                    <TextInput
+                        value={this.state.text}
+                        placeholder="Seu nome como no documento de grupos"
+                        onChangeText={(login) => { this.setState({ login }) }}
+                        underlineColorAndroid="transparent"
+                    >
+                    </TextInput>
+                </View>
+                <View style={{flex:1}}>
+
+                </View>
 
                 <View style={styles.underBackGround}>
                     <TouchableOpacity
@@ -90,26 +107,36 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#256CA0',
         flexDirection: "column",
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
     Image: {
-        flex: 1,
+        flex: 4,
         width: '100%',
         height: '100%',
         resizeMode: 'stretch',
     },
-    credentialsInput: {
-        alignSelf: 'center',
-        textAlign: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-        paddingBottom: 10,
-        paddingTop: 10,
+    middleBackGround: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf:'center',
+        margin: 10,
+
+        borderTopRightRadius: 50,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
+        
+        borderColor: 'black',
+        borderWidth: 1,
+
         width: Dimensions.get("window").width * 0.90,
         backgroundColor: 'white',
-        top: Dimensions.get("window").height * 0.10,
 
-        borderRadius: 50,
+        borderTopRightRadius: 50,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
+        
         borderColor: 'black',
         borderWidth: 1,
 
@@ -123,10 +150,17 @@ const styles = StyleSheet.create({
 
         elevation: 2,
     },
+    icon:{
+        padding: 10,
+        margin: 5,
+        height: 25,
+        width: 25,
+        resizeMode : 'stretch',
+        alignItems: 'center'
+    },
     underBackGround: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: Dimensions.get("window").height * 0.08,
+        flex: 2,
+        justifyContent: 'center',
 
     },
     TouchableOpacity: {
@@ -154,7 +188,7 @@ const styles = StyleSheet.create({
 
     },
     buttonText: {
-        //alignSelf: 'center',
+        alignSelf: 'center',
         textAlign: "center",
         paddingBottom: 10,
         paddingTop: 10,

@@ -1,18 +1,17 @@
 import React from "react";
 import { View } from "react-native";
-import { HeaderBackButton } from 'react-navigation-stack';
-import UserSubscribedContainer from "../containers/UserSubscribedContainer";
+import AddTeamContainer from "../containers/AddTeamContainer";
 
-class UserSubscribedScreen extends React.Component<Props, State> {
+class AddTeamScreen extends React.Component<Props, State> {
   constructor() {
     super();
   }
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "Bem Vindo",
+      title: "Alunos",
       //header todo
-      headerStyle: {
+      headerStyle:{
         backgroundColor: '#003C61',
       },
       //cor dos 3 elementos
@@ -23,10 +22,8 @@ class UserSubscribedScreen extends React.Component<Props, State> {
         flex: 1,
         fontWeight: 'bold'
       },
-      headerLeft: (
-        <HeaderBackButton tintColor={'#A8D8EF'}
-          onPress={() => navigation.navigate("Home")} />
-      ),
+
+      //headerLeft: null,
       headerRight: (
         <View>
         </View>
@@ -34,10 +31,9 @@ class UserSubscribedScreen extends React.Component<Props, State> {
     };
   };
 
-
   render() {
-    return <UserSubscribedContainer navigation={this.props.navigation} />;
+    return <AddTeamContainer navigation={this.props.navigation} />;
   }
 }
 
-export default UserSubscribedScreen;
+export default AddTeamScreen;

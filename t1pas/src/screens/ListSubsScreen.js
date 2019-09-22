@@ -1,9 +1,9 @@
 import React from "react";
 import { View } from "react-native";
 import { HeaderBackButton } from 'react-navigation-stack';
-import UserSubscribedContainer from "../containers/UserSubscribedContainer";
+import ListSubsContainer from "../containers/ListSubsContainer";
 
-class UserSubscribedScreen extends React.Component<Props, State> {
+class ListSubsScreen extends React.Component<Props, State> {
   constructor() {
     super();
   }
@@ -36,8 +36,8 @@ class UserSubscribedScreen extends React.Component<Props, State> {
 
 
   render() {
-    return <UserSubscribedContainer navigation={this.props.navigation} />;
+    return <ListSubsContainer navigation={this.props.navigation} />;
   }
 }
 
-export default UserSubscribedScreen;
+export default ListSubsScreen;

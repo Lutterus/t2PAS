@@ -13,7 +13,7 @@ class FetchService {
     }
   }
 
-  post = async (currentUrl) => {
+  postTime = async (currentUrl, arrayData) => {
     let url = BASE_URL + currentUrl
     fetch(url, {
       method: 'POST',
@@ -22,12 +22,10 @@ class FetchService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        firstParam: 'yourValue',
-        secondParam: 'yourOtherValue',
+        time: arrayData
       }),
     });
   }
 
 }
-
 export default FetchService;
