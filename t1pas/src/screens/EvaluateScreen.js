@@ -233,7 +233,7 @@ class EvaluateScreen extends React.Component<Props, State> {
                   uncheckedIcon='add'
                   checkedColor='green'
                   onPress={this.showSoftwareFuncionando}
-                  checked={this.state.student.softwareFuncionando > 0}
+                  checked={this.state.student.softwareFuncionando >= 0}
                 />
               </View>
             </TouchableOpacity>
@@ -282,7 +282,7 @@ class EvaluateScreen extends React.Component<Props, State> {
                   uncheckedIcon='add'
                   checkedColor='green'
                   onPress={this.showProcesso}
-                  checked={this.state.student.processo > 0}
+                  checked={this.state.student.processo >= 0}
                 />
               </View>
             </TouchableOpacity>
@@ -331,7 +331,7 @@ class EvaluateScreen extends React.Component<Props, State> {
                   uncheckedIcon='add'
                   checkedColor='green'
                   onPress={this.showPitch}
-                  checked={this.state.student.pitch > 0}
+                  checked={this.state.student.pitch >= 0}
                 />
               </View>
             </TouchableOpacity>
@@ -380,7 +380,7 @@ class EvaluateScreen extends React.Component<Props, State> {
                   uncheckedIcon='add'
                   checkedColor='green'
                   onPress={this.showFormacaoDoTime}
-                  checked={this.state.student.formacaoDoTime > 0}
+                  checked={this.state.student.formacaoDoTime >= 0}
                 />
               </View>
             </TouchableOpacity>
@@ -429,7 +429,7 @@ class EvaluateScreen extends React.Component<Props, State> {
                   uncheckedIcon='add'
                   checkedColor='green'
                   onPress={this.showInovacao}
-                  checked={this.state.student.inovacao > 0}
+                  checked={this.state.student.inovacao >= 0}
                 />
               </View>
             </TouchableOpacity>

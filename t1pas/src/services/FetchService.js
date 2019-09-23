@@ -1,4 +1,5 @@
-const BASE_URL = "http://192.168.0.11:3000/api/";
+const global = require('../util/util.js');;
+const BASE_URL = global.BASE_URL;
 
 class FetchService {
 

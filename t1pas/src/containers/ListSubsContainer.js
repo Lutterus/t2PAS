@@ -93,11 +93,11 @@ export default class HomeContainer extends Component {
                                                 checkedColor='green'
                                                 onPress={() => this.ButtonMethod(item)}
                                                 checked={
-                                                    item.softwareFuncionando>0 &&
-                                                    item.processo > 0 &&
-                                                    item.pitch > 0 &&
-                                                    item.inovacao > 0 &&
-                                                    item.formacaoDoTime > 0
+                                                    item.softwareFuncionando>=0 &&
+                                                    item.processo >= 0 &&
+                                                    item.pitch >= 0 &&
+                                                    item.inovacao >= 0 &&
+                                                    item.formacaoDoTime >= 0
                                                 }
                                                 
                                             />
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         backgroundColor: '#012640',
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.20,
+        height: Dimensions.get("window").height * 0.30,
 
         borderColor: 'black',
         borderWidth: 1,

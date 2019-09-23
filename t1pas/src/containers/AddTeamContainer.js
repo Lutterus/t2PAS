@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
 
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.20,
+        height: Dimensions.get("window").height * 0.30,
 
         borderColor: 'black',
         borderWidth: 1,

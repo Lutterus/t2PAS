@@ -47,6 +47,19 @@ export default class HomeContainer extends Component {
         var value = await AsyncStorage.getItem('login');
         var url = "newTime/" + value;
         const res = await this.FetchService.postTime(url, this.state.dados);
+
+        var es = false
+        var cc = false
+
+        this.state.dados.forEach(element => {
+            console.log(element.curs)
+            if(element.curso==="Engenharia de Software"){
+                es=true
+            }else if(element.curso==="Ciência da Computação"){
+                cc=true
+            }
+        });
+
         if (res === false) {
             Alert.alert(
                 "Erro durante o login",
@@ -54,11 +67,20 @@ export default class HomeContainer extends Component {
                 [{ text: "OK" }]
             );
         } else {
-            Alert.alert(
-                "Sucesso",
-                "Suas alterações foram salvas com sucesso",
-                [{ text: "OK" }]
-            );
+            if(es===true && cc===true){
+                Alert.alert(
+                    "Sucesso",
+                    "Alterações foram salvas. Este time está habito a participar",
+                    [{ text: "OK" }]
+                );
+            }else{
+                Alert.alert(
+                    "Sucesso",
+                    "Alterações foram salvas. Contudo, o time que você salvou não é um time válido para participar",
+                    [{ text: "OK" }]
+                );
+            }
+            
         }
 
     };
@@ -190,7 +212,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
 
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.20,
+        height: Dimensions.get("window").height * 0.30,
 
         borderColor: 'black',
         borderWidth: 1,

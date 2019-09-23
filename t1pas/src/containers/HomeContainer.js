@@ -13,7 +13,6 @@ import { NavigationScreenProp } from "react-navigation";
 import { TextInput } from "react-native-gesture-handler";
 import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
-import { Icon } from 'react-native-elements'
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -23,7 +22,7 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = { login: 'Professor Professor Professor Professor' };
+        this.state = { login: 'João Octavio Freitas Bitelo' };
     }
 
     loginButtonMethod = async () => {
@@ -74,12 +73,9 @@ export default class HomeContainer extends Component {
                 </View>
 
                 <View style={styles.middleBackGround}>
-                    <Icon style={styles.icon}
-                        name='person'
-                        color='#00aced' />
                     <TextInput
                         value={this.state.text}
-                        placeholder="Seu nome como no documento de grupos"
+                        placeholder="Nome como no doc. de grupos"
                         onChangeText={(login) => { this.setState({ login }) }}
                         underlineColorAndroid="transparent"
                     >
@@ -149,14 +145,6 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
 
         elevation: 2,
-    },
-    icon:{
-        padding: 10,
-        margin: 5,
-        height: 25,
-        width: 25,
-        resizeMode : 'stretch',
-        alignItems: 'center'
     },
     underBackGround: {
         flex: 2,
