@@ -46,7 +46,7 @@ export default class HomeContainer extends Component {
         const res = await this.FetchService.get(url);
         if (res === false) {
             Alert.alert(
-                "Erro durante o login",
+                "Erro durante a autenticação",
                 "Não foi possível conectar-se ao servidor",
                 [{ text: "OK" }]
             );

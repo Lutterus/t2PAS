@@ -12,6 +12,7 @@ import {
 import { NavigationScreenProp } from "react-navigation";
 import FetchService from "../services/FetchService";
 import { AsyncStorage } from "react-native";
+import { CheckBox } from 'react-native-elements';
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -21,36 +22,30 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = {dados:[], loading: true, pressed: false, selected_category: []};
+        this.state = {dados:[], loading: true, pressed: false, selected_category: [], self:[]};
     }
 
     componentWillMount = async () => {
+        if(this.state.loading===false){
+            this.setState({loading: true}) 
+        }
         var url = "todosAlunos/";
-        const res = await this.FetchService.get(url);
-        var value = await AsyncStorage.getItem('login');
-        var url2 = "time/" + value;
-        const res2 = await this.FetchService.get(url2);
-        if (res === false || res2 === false) {
+        const alunos = await this.FetchService.get(url);
+
+        if (alunos === false) {
             Alert.alert(
-                "Erro durante o login",
+                "Erro durante a autenticação",
                 "Não foi possível conectar-se ao servidor",
                 [{ text: "OK" }]
             );
         } else {
             const students = []
-            res.forEach(element => {
-                if(element.nome != res2[0].nome){
-                    var valid = false;
-                    res2[0].time.forEach(element2 => {
-                        if(element2.nome===element.nome){
-                            valid = true;
-                        }else{
-                        }
-                    })  
-                    
-                    if(valid===false){
-                        students.push(element);
-                    }
+            var name = await AsyncStorage.getItem('login');
+            alunos.forEach(element => {
+                if(element.nome != name){
+                    students.push(element);
+                }else{
+                    this.setState({self: element}) 
                 }
                             
             });
@@ -60,31 +55,50 @@ export default class HomeContainer extends Component {
         
     }
     saveButtonMethod = async () => {
-        const toServer = []
+        const login = await AsyncStorage.getItem('login');
+        var toServer = []
+        var invalid = false
         this.state.selected_category.forEach(element => {
             toServer.push(this.state.dados[element]);
         });
-        var value = await AsyncStorage.getItem('login');
 
-        var url = "time/" + value;
-        const res = await this.FetchService.get(url);
+        toServer.forEach(element => {
+            if(element.estaEmTime===true){
+                invalid = true
+            }
+        });
 
-        res[0].time.forEach(element => {
-            toServer.push(element);
-        });    
-
-        const url2 = "newTime/" + value;
-        const res2 = await this.FetchService.postTime(url2, toServer);
-        if (res === false || res2 === false) {
+        if(invalid===true){
             Alert.alert(
-                "Erro durante o login",
-                "Não foi possível conectar-se ao servidor",
+                "Erro",
+                "Você adicionou um usuário que já está em outro time. Remova-o e continue",
                 [{ text: "OK" }]
             );
-        } else {
-            this.props.navigation.navigate("EditTeam")            
-        }
-        
+        }else{
+            var url = "myTime/" + login;
+            const res = await this.FetchService.get(url);
+
+            if(res.length!=0){
+                res[0].time.forEach(element => {
+                    toServer.push(element)
+                });
+            }else{
+                toServer.push(this.state.self)
+            }
+
+            url = "editTime/" + login;
+            const res2 = await this.FetchService.postTime(url, toServer);
+
+            if (res === false || res2 === false) {
+                Alert.alert(
+                    "Erro durante a autenticação",
+                    "Não foi possível conectar-se ao servidor",
+                    [{ text: "OK" }]
+                );
+            } else {
+                this.props.navigation.navigate("EditTeam")            
+            }
+        }      
        
     };
 
@@ -111,7 +125,7 @@ export default class HomeContainer extends Component {
         }else{
             return (
                 <View style={styles.viewBackground}>
-                    <View style={{ flex: 0.25 }}>
+                    <View style={{flex: 0.35 }}>
     
                     </View>
     
@@ -128,12 +142,31 @@ export default class HomeContainer extends Component {
                                         : styles.NotPressed
                                     ]}
                                     onPress={() => this._handleCategorySelect(index.toString())}>
-                                    <Text style={[styles.item, styles.itemColor1]}>
-                                        {item.nome}
-                                    </Text>
-                                    <Text style={[styles.item, styles.itemColor2]}>
-                                        {item.curso}
-                                    </Text>
+                                    <View style={styles.TouchableOpacityNamesInfo}>
+                                        <View style={styles.viewNamesInfo}>
+                                            <Text style={[styles.item, styles.itemColor1]}>
+                                                {item.nome}
+                                            </Text>
+                                            <Text style={[styles.item, styles.itemColor2]}>
+                                                {item.curso}
+                                            </Text>
+                                        </View>
+                                        {item.estaEmTime &&
+                                            <View style={styles.hasTeam}>
+                                                <CheckBox
+                                                    center
+                                                    iconRight
+                                                    iconType='material'
+                                                    checkedIcon='clear'
+                                                    checkedColor='red'
+                                                    onPress={() => this._handleCategorySelect(index.toString())}
+                                                    checked={!this.state.checked}
+                                                />
+                                            </View>
+                                        }
+                                        
+                                    </View>                                   
+                                    
                                 </TouchableOpacity>
                             
                             )}
@@ -215,7 +248,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
 
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.30,
+        height: 128,
 
         borderColor: 'black',
         borderWidth: 1,
@@ -235,6 +268,22 @@ const styles = StyleSheet.create({
     },
     NotPressed:{
         backgroundColor: '#012640',
+    },
+    TouchableOpacityNamesInfo: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    viewNamesInfo: {
+        flex: 3,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+    hasTeam:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     item: {
         flex: 1,

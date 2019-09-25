@@ -21,7 +21,7 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = {dados:[], loading: true};
+        this.state = {dados:[], loading: true, possuiTime: false, valido:false, self:[]};
     }
 
     componentDidMount = async () => {
@@ -29,60 +29,63 @@ export default class HomeContainer extends Component {
             this.setState({loading: true}) 
         }
         var value = await AsyncStorage.getItem('login');
-        var url = "time/" + value;
+        var url = "myTime/" + value;
         const res = await this.FetchService.get(url);
         if (res === false) {
             Alert.alert(
-                "Erro durante o login",
+                "Erro durante a autenticação",
                 "Não foi possível conectar-se ao servidor",
                 [{ text: "OK" }]
             );
         } else {
-            this.setState({dados: res[0].time}) 
+            if(res.length!=0){
+                this.setState({possuiTime: true}) 
+                const students = []
+                res[0].time.forEach(element => {
+                    if(element.nome != value){
+                        students.push(element);
+                    }else{
+                        this.setState({self: element}) 
+                    }       
+                });
+                this.setState({dados: students})
+                this.setState({valido: res[0].valido})
+            }else{
+                this.setState({possuiTime: false}) 
+            }
+             
             this.setState({loading: false}) 
         }
         
     }
     saveButtonMethod = async () => {
-        var value = await AsyncStorage.getItem('login');
-        var url = "newTime/" + value;
-        const res = await this.FetchService.postTime(url, this.state.dados);
+        console.log(this.state.dados)
+        var login = await AsyncStorage.getItem('login');
+        var url = "editTime/" + login;
+        var url2 = "cleanTime/" + login
+        var toServer = []
+        if(this.state.dados.length>0){
+            toServer = this.state.dados
+        }
+        toServer.push(this.state.self)
 
-        var es = false
-        var cc = false
+        const res2 = await this.FetchService.get(url2);
+        const res = await this.FetchService.postTime(url, toServer);
 
-        this.state.dados.forEach(element => {
-            console.log(element.curs)
-            if(element.curso==="Engenharia de Software"){
-                es=true
-            }else if(element.curso==="Ciência da Computação"){
-                cc=true
-            }
-        });
-
-        if (res === false) {
+        if (res === false || res2 === false) {
             Alert.alert(
-                "Erro durante o login",
+                "Erro durante a autenticação",
                 "Não foi possível conectar-se ao servidor",
                 [{ text: "OK" }]
             );
         } else {
-            if(es===true && cc===true){
-                Alert.alert(
-                    "Sucesso",
-                    "Alterações foram salvas. Este time está habito a participar",
-                    [{ text: "OK" }]
-                );
-            }else{
-                Alert.alert(
-                    "Sucesso",
-                    "Alterações foram salvas. Contudo, o time que você salvou não é um time válido para participar",
-                    [{ text: "OK" }]
-                );
-            }
-            
+            this.componentDidMount()
+            Alert.alert(
+                "Sucesso",
+                "Suas alterações foram salvas com sucesso",
+                [{ text: "OK"}]
+            ); 
         }
-
     };
 
     namesButtonMethod = async (id) => {
@@ -110,14 +113,43 @@ export default class HomeContainer extends Component {
                 </View>
             );
             
+        }else if(this.state.possuiTime===false){
+            return(
+                <View style={styles.viewBackground}>
+                    <NavigationEvents
+                    onDidFocus={() => this.componentDidMount()}
+                    />
+                    <View style={{ flex: 1 }}>
+                    </View>
+                    <View style={stylesNoTeam.viewWarning}>
+                        <Text style={stylesNoTeam.text1}>
+                            Você ainda não possui um time cadastrado
+                        </Text>
+                        <Text style={stylesNoTeam.text2}>
+                            Pressiona o "+" para adicionar pessoas ao seu time
+                        </Text>
+                    </View>
+                    
+                </View>
+            );     
         }else{
             return (
                 <View style={styles.viewBackground}>
                     <NavigationEvents
                     onDidFocus={() => this.componentDidMount()}
                     />
-                    <View style={{ flex: 0.25 }}>
-    
+                    <View style={{ flex: 0.35 }}>
+                        {this.state.valido===true 
+                            ? 
+                            <Text style={[stylesNoTeam.text1, stylesNoTeam.cor1]}>
+                                Time Válido
+                            </Text>
+                            :
+                            <Text style={[stylesNoTeam.text1, stylesNoTeam.cor2]}>
+                                Time Inválido
+                            </Text>
+                        }
+                        
                     </View>
     
                     <View style={styles.viewNames}>
@@ -150,6 +182,35 @@ export default class HomeContainer extends Component {
         
     }
 }
+
+const stylesNoTeam = StyleSheet.create({
+    viewWarning:{
+        flex: 3, 
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        width: Dimensions.get("window").width * 0.90,
+
+    },
+    text1:{
+        flex: 1, 
+        fontSize: 30, 
+        flexWrap: 'wrap', 
+        color: '#A8D8EF', 
+        fontWeight: 'bold'
+    },
+    text2: {
+        flex: 1, 
+        fontSize: 30, 
+        flexWrap: 'wrap',
+        color: '#A8D8EF'
+    },
+    cor1: {
+        color:'#59BDB5'
+    },
+    cor2: {
+        color: '#EE4445'
+    }
+});
 
 const styles = StyleSheet.create({
     viewBackground: {
@@ -212,7 +273,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
 
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.30,
+        height: 128,
 
         borderColor: 'black',
         borderWidth: 1,

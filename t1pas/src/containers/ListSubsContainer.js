@@ -29,27 +29,23 @@ export default class HomeContainer extends Component {
         if (this.state.loading===false) {
             this.setState({ loading: true })
         }
-        var url = "inscritos/";
+        var url = "timesInscritos/";
         const res = await this.FetchService.get(url);
         if (res === false) {
             Alert.alert(
-                "Erro durante o login",
+                "Erro durante a autenticação",
                 "Não foi possível conectar-se ao servidor",
                 [{ text: "OK" }]
             );
         } else {
-            const students = []
-            res.forEach(element => {
-                students.push(element);      
-            });
-            this.setState({dados: students}) 
+            this.setState({dados: res})
             this.setState({loading: false}) 
         }
         
     }
 
     ButtonMethod = async (item) => {
-        AsyncStorage.setItem("currentStudent", item.nome);
+        AsyncStorage.setItem("currentStudent", item.time[0].nome);
         this.props.navigation.navigate("Evaluate")
     }
 
@@ -76,15 +72,24 @@ export default class HomeContainer extends Component {
                                     onPress={() => this.ButtonMethod(item)}>
                                     <View style={styles.viewTouchableOpacity}>
                                         <View style={styles.viewToNames}>
-                                        <Text style={[styles.item, styles.itemColor1]}>
-                                            {item.nome}
-                                        </Text>
-                                        <Text style={[styles.item, styles.itemColor2]}>
-                                            {item.curso}
-                                        </Text>
+                                            <FlatList
+                                                data={item.time}
+                                                renderItem={({ item, index }) => (
+                                                    <Text style={{fontSize: 18,flexWrap: 'wrap',color: '#A8D8EF',padding: 10,}}>
+                                                        {item.nome}
+                                                    </Text>
+                                                )}
+                                                keyExtractor={(item, index) => index.toString()}
+                                            />
                                         </View>
                                         <View style={styles.viewToRated}>
-                                            <CheckBox
+                                        {item.softwareFuncionando>=0 &&
+                                             item.processo >= 0 &&
+                                             item.pitch >= 0 &&
+                                             item.inovacao >= 0 &&
+                                             item.formacaoDoTime >= 0 &&
+
+                                             <CheckBox
                                                 center
                                                 iconRight
                                                 iconType='material'
@@ -92,18 +97,10 @@ export default class HomeContainer extends Component {
                                                 uncheckedIcon='add'
                                                 checkedColor='green'
                                                 onPress={() => this.ButtonMethod(item)}
-                                                checked={
-                                                    item.softwareFuncionando>=0 &&
-                                                    item.processo >= 0 &&
-                                                    item.pitch >= 0 &&
-                                                    item.inovacao >= 0 &&
-                                                    item.formacaoDoTime >= 0
-                                                }
+                                                checked={!this.state.checked}
                                                 
-                                            />
-                                        </View>
-                                    
-                                        
+                                            />}
+                                        </View>                               
                                     </View>
                                     
                                 </TouchableOpacity>
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         backgroundColor: '#012640',
         width: Dimensions.get("window").width * 0.85,
-        height: Dimensions.get("window").height * 0.30,
+        //height: 192,
 
         borderColor: 'black',
         borderWidth: 1,

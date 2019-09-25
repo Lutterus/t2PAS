@@ -99,7 +99,7 @@ class EvaluateScreen extends React.Component<Props, State> {
       this.setState({ loading: true })
     }
     var value = await AsyncStorage.getItem('currentStudent');
-    var url = "inscrito/" + value;
+    var url = "timeInscrito/" + value;
     const res = await this.FetchService.get(url);
     if (res === false) {
       Alert.alert(
@@ -108,7 +108,20 @@ class EvaluateScreen extends React.Component<Props, State> {
         [{ text: "OK" }]
       );
     } else {
-      this.setState({ student: res[0] })
+      if(res.hasOwnProperty('softwareFuncionando')){
+        this.setState({ student: res[0] })         
+      }else{
+        var data = 
+          {
+            "softwareFuncionando": -1,
+            "processo": -1,
+            "pitch": -1,
+            "inovacao": -1,
+            "formacaoDoTime": -1
+          }
+
+        this.setState({ student: data })
+      }
       this.setState({ loading: false })
       this.props.navigation.setParams({ saveChanges: this.saveChanges});
     }
@@ -225,16 +238,17 @@ class EvaluateScreen extends React.Component<Props, State> {
                 <Text style={styles.buttonEvaluateText}>Software Funcionando</Text>
               </View>
               <View style={styles.viewToRated}>
-                <CheckBox
-                  center
-                  iconRight
-                  iconType='material'
-                  checkedIcon='done'
-                  uncheckedIcon='add'
-                  checkedColor='green'
-                  onPress={this.showSoftwareFuncionando}
-                  checked={this.state.student.softwareFuncionando >= 0}
-                />
+                {this.state.student.softwareFuncionando >= 0 &&
+                  <CheckBox
+                    center
+                    iconRight
+                    iconType='material'
+                    checkedIcon='done'
+                    checkedColor='green'
+                    onPress={this.showSoftwareFuncionando}
+                    checked={!this.state.checked}
+                  />
+                }
               </View>
             </TouchableOpacity>
             {this.state.showSoftwareFuncionando &&
@@ -274,16 +288,17 @@ class EvaluateScreen extends React.Component<Props, State> {
                 <Text style={styles.buttonEvaluateText}>Processo</Text>
               </View>
               <View style={styles.viewToRated}>
-                <CheckBox
-                  center
-                  iconRight
-                  iconType='material'
-                  checkedIcon='done'
-                  uncheckedIcon='add'
-                  checkedColor='green'
-                  onPress={this.showProcesso}
-                  checked={this.state.student.processo >= 0}
-                />
+                {this.state.student.processo >= 0 &&
+                  <CheckBox
+                    center
+                    iconRight
+                    iconType='material'
+                    checkedIcon='done'
+                    checkedColor='green'
+                    onPress={this.showProcesso}
+                    checked={!this.state.checked}
+                  />
+                }
               </View>
             </TouchableOpacity>
             {this.state.showProcesso &&
@@ -323,16 +338,17 @@ class EvaluateScreen extends React.Component<Props, State> {
                 <Text style={styles.buttonEvaluateText}>Pitch</Text>
               </View>
               <View style={styles.viewToRated}>
-                <CheckBox
-                  center
-                  iconRight
-                  iconType='material'
-                  checkedIcon='done'
-                  uncheckedIcon='add'
-                  checkedColor='green'
-                  onPress={this.showPitch}
-                  checked={this.state.student.pitch >= 0}
-                />
+                {this.state.student.pitch >= 0 &&
+                  <CheckBox
+                    center
+                    iconRight
+                    iconType='material'
+                    checkedIcon='done'
+                    checkedColor='green'
+                    onPress={this.showPitch}
+                    checked={!this.state.checked}
+                  />
+                }
               </View>
             </TouchableOpacity>
             {this.state.showPitch &&
@@ -372,16 +388,17 @@ class EvaluateScreen extends React.Component<Props, State> {
                 <Text style={styles.buttonEvaluateText}>Formação do Time</Text>
               </View>
               <View style={styles.viewToRated}>
-                <CheckBox
-                  center
-                  iconRight
-                  iconType='material'
-                  checkedIcon='done'
-                  uncheckedIcon='add'
-                  checkedColor='green'
-                  onPress={this.showFormacaoDoTime}
-                  checked={this.state.student.formacaoDoTime >= 0}
-                />
+                {this.state.student.formacaoDoTime >= 0 &&
+                  <CheckBox
+                    center
+                    iconRight
+                    iconType='material'
+                    checkedIcon='done'
+                    checkedColor='green'
+                    onPress={this.showFormacaoDoTime}
+                    checked={!this.state.checked}
+                  />
+                }
               </View>
             </TouchableOpacity>
             {this.state.showFormacaoDoTime &&
@@ -421,16 +438,17 @@ class EvaluateScreen extends React.Component<Props, State> {
                 <Text style={styles.buttonEvaluateText}>Inovação</Text>
               </View>
               <View style={styles.viewToRated}>
-                <CheckBox
-                  center
-                  iconRight
-                  iconType='material'
-                  checkedIcon='done'
-                  uncheckedIcon='add'
-                  checkedColor='green'
-                  onPress={this.showInovacao}
-                  checked={this.state.student.inovacao >= 0}
-                />
+                {this.state.student.inovacao >= 0 &&
+                  <CheckBox
+                    center
+                    iconRight
+                    iconType='material'
+                    checkedIcon='done'
+                    checkedColor='green'
+                    onPress={this.showInovacao}
+                    checked={!this.state.checked}
+                  />
+                }
               </View>
             </TouchableOpacity>
             {this.state.showInovacao &&

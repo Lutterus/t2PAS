@@ -15,17 +15,26 @@ class FetchService {
   }
 
   postTime = async (currentUrl, arrayData) => {
-    let url = BASE_URL + currentUrl
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        time: arrayData
-      }),
-    });
+    try{
+      let url = BASE_URL + currentUrl
+      let response = fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          time: arrayData
+        }),
+      })
+      return response
+
+
+      
+    }catch{
+      return false
+    }
+    
   }
 
 }
