@@ -67,35 +67,30 @@ class EvaluateScreen extends React.Component<Props, State> {
     };
   };
   saveChanges = async () => {
-    var value = await AsyncStorage.getItem('currentStudent');
-    let url = "http://192.168.0.11:3000/api/avaliacao/"+value
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        softwareFuncionando: this.state.student.softwareFuncionando,
-        processo:  this.state.student.processo,
-        pitch:  this.state.student.pitch,
-        inovacao:  this.state.student.inovacao,
-        formacaoDoTime:  this.state.student.formacaoDoTime
-      }),
-    }).then(
+    var login = await AsyncStorage.getItem('currentStudent');
+    var url = "avaliacao/" + login;
+    const res = await this.FetchService.postAvaliacao(url, this.state.student);
+    if (res === false) {
+      Alert.alert(
+        "Erro durante a autenticação",
+        "Não foi possível conectar-se ao servidor",
+        [{ text: "OK" }]
+      );
+    } else {
       Alert.alert(
         "Sucesso",
         "Suas alterações foram salvas com sucesso",
         [{ text: "Ok", onPress: () => this.props.navigation.navigate("ListSubs") }]
-      )
-    );
-    
-    
+      );
+    }
+
+
+
 
   };
 
   componentDidMount = async () => {
-    if (this.state.loading===false) {
+    if (this.state.loading === false) {
       this.setState({ loading: true })
     }
     var value = await AsyncStorage.getItem('currentStudent');
@@ -108,22 +103,22 @@ class EvaluateScreen extends React.Component<Props, State> {
         [{ text: "OK" }]
       );
     } else {
-      if(res.hasOwnProperty('softwareFuncionando')){
-        this.setState({ student: res[0] })         
-      }else{
-        var data = 
-          {
-            "softwareFuncionando": -1,
-            "processo": -1,
-            "pitch": -1,
-            "inovacao": -1,
-            "formacaoDoTime": -1
-          }
+      if (res[0].hasOwnProperty('softwareFuncionando')) {
+        this.setState({ student: res[0] })
+      } else {
+        var data =
+        {
+          "softwareFuncionando": -1,
+          "processo": -1,
+          "pitch": -1,
+          "inovacao": -1,
+          "formacaoDoTime": -1
+        }
 
         this.setState({ student: data })
       }
       this.setState({ loading: false })
-      this.props.navigation.setParams({ saveChanges: this.saveChanges});
+      this.props.navigation.setParams({ saveChanges: this.saveChanges });
     }
 
   }

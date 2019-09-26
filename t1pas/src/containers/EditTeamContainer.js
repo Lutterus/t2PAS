@@ -59,7 +59,6 @@ export default class HomeContainer extends Component {
         
     }
     saveButtonMethod = async () => {
-        console.log(this.state.dados)
         var login = await AsyncStorage.getItem('login');
         var url = "editTime/" + login;
         var url2 = "cleanTime/" + login

@@ -83,12 +83,12 @@ export default class HomeContainer extends Component {
                                             />
                                         </View>
                                         <View style={styles.viewToRated}>
-                                        {item.softwareFuncionando>=0 &&
+                                        {item.softwareFuncionando >= 0 &&
                                              item.processo >= 0 &&
                                              item.pitch >= 0 &&
                                              item.inovacao >= 0 &&
                                              item.formacaoDoTime >= 0 &&
-
+                                            <View style={styles.hasTeam}>
                                              <CheckBox
                                                 center
                                                 iconRight
@@ -99,7 +99,9 @@ export default class HomeContainer extends Component {
                                                 onPress={() => this.ButtonMethod(item)}
                                                 checked={!this.state.checked}
                                                 
-                                            />}
+                                            />
+                                             </View>
+                                            }
                                         </View>                               
                                     </View>
                                     
@@ -185,5 +187,10 @@ const styles = StyleSheet.create({
         flex: 0.25,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-      }
+      },
+      hasTeam:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

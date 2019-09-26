@@ -64,36 +64,40 @@ export default class HomeContainer extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.viewBackground} behavior="padding" enabled>
-                <Image style={styles.Image}
-                    source={require("../../assets/logo.jpg")}
-                />
-                <View style={{flex:1}}>
-
+            <View style={styles.viewBackground}>
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <Image style={styles.Image}
+                        source={require("../../assets/logo.jpg")}
+                    />
                 </View>
-
-                <View style={styles.middleBackGround}>
-                    <TextInput
-                        value={this.state.text}
-                        placeholder="Nome como no doc. de grupos"
-                        onChangeText={(login) => { this.setState({ login }) }}
-                        underlineColorAndroid="transparent"
+                
+                <View style={{flex: 0.1 }}>
+    
+                </View>
+                <KeyboardAvoidingView style={{ flex: 1 }}
+                    behavior="padding"
+                    //keyboardVerticalOffset={60}>
                     >
-                    </TextInput>
-                </View>
-                <View style={{flex:1}}>
-
-                </View>
-
-                <View style={styles.underBackGround}>
-                    <TouchableOpacity
-                        style={styles.TouchableOpacity}
-                        onPress={this.loginButtonMethod}>
-                        <Text style={styles.buttonText}>AVANÇAR</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </KeyboardAvoidingView>
+                    <View style={styles.middleBackGround}>
+                        <TextInput style={styles.textField}
+                            value={this.state.text}
+                            placeholder="Nome como no doc. de grupos"
+                            placeholderTextColor="white"
+                            onChangeText={(login) => { this.setState({ login }) }}
+                            underlineColorAndroid="transparent"
+                            textAlign={'center'}
+                        >
+                        </TextInput>
+                    </View>
+                    <View style={styles.underBackGround}>
+                        <TouchableOpacity
+                            style={styles.TouchableOpacity}
+                            onPress={this.loginButtonMethod}>
+                            <Text style={styles.buttonText}>AVANÇAR</Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
         );
     }
 }
@@ -106,33 +110,23 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     Image: {
-        flex: 4,
         width: '100%',
         height: '100%',
-        resizeMode: 'stretch',
+        resizeMode: 'center',
     },
     middleBackGround: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        alignSelf:'center',
-        margin: 10,
-
+    },
+    textField:{
+        width: Dimensions.get("window").width * 0.80,
+        height: Dimensions.get("window").height * 0.08,
+        backgroundColor:"rgba(255,255,255,0.4)",
         borderTopRightRadius: 50,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
-        
-        borderColor: 'black',
-        borderWidth: 1,
-
-        width: Dimensions.get("window").width * 0.90,
-        backgroundColor: 'white',
-
-        borderTopRightRadius: 50,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
-        
         borderColor: 'black',
         borderWidth: 1,
 
@@ -147,7 +141,7 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     underBackGround: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
 
     },
