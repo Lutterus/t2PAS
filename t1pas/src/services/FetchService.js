@@ -5,13 +5,14 @@ class FetchService {
 
   get = async (currentUrl) => {
     let url = BASE_URL + currentUrl
-    try {
-      let response = await fetch(url);
-      let responseJson = await response.json();
-      return responseJson.data;
-    } catch (error) {
-      return false;
-    }
+    return fetch(url)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson.data
+      })
+      .catch((error) =>{
+        return false;
+      });
   }
 
   postTime = async (currentUrl, arrayData) => {

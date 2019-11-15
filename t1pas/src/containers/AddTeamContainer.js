@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
-    StyleSheet,
     View,
-    Dimensions,
     TouchableOpacity,
     Text,
     FlatList,
@@ -13,6 +11,8 @@ import { NavigationScreenProp } from "react-navigation";
 import FetchService from "../services/FetchService";
 import { AsyncStorage } from "react-native";
 import { CheckBox } from 'react-native-elements';
+var tempstyles = require('../styles/CompositeStyles')
+const styles = tempstyles.AddTeamStyle;
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -187,119 +187,3 @@ export default class HomeContainer extends Component {
         
     }
 }
-
-const styles = StyleSheet.create({
-    viewBackground: {
-        backgroundColor: '#256CA0',
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    viewNames: {
-        flex: 3,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: Dimensions.get("window").width * 0.90,
-    },
-    viewConfigButtons: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    TouchableOpacity: {
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-
-        width: Dimensions.get("window").width * 0.90,
-        height: Dimensions.get("window").height * 0.07,
-
-        borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-    },
-    buttonText: {
-        textAlign: "center",
-        paddingBottom: 10,
-        paddingTop: 10,
-        color: "white"
-
-    },
-    TouchableOpacityAdd: {
-        backgroundColor: '#59BDB5',
-    },
-    TouchableOpacityNames: {
-        marginBottom: 8,
-        justifyContent: 'flex-start',
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-
-        width: Dimensions.get("window").width * 0.85,
-        height: 128,
-
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-    },
-    Pressed:{
-        backgroundColor: '#5187ac',
-    },
-    NotPressed:{
-        backgroundColor: '#012640',
-    },
-    TouchableOpacityNamesInfo: {
-        flex:1,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    viewNamesInfo: {
-        flex: 3,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-    },
-    hasTeam:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    item: {
-        flex: 1,
-        padding: 10,
-        fontSize: 18,
-        flexWrap: 'wrap'
-    },
-    itemColor1:{
-        color: '#A8D8EF',
-    },
-    itemColor2:{
-        color: '#9FB8CE',
-        fontWeight: 'bold'
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center'
-      }
-});

@@ -13,6 +13,8 @@ import FetchService from "../services/FetchService";
 import { CheckBox } from 'react-native-elements';
 import { AsyncStorage } from "react-native";
 import { NavigationScreenProp, NavigationEvents } from "react-navigation";
+var tempstyles = require('../styles/CompositeStyles')
+const styles = tempstyles.ListSubStyle;
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -118,79 +120,3 @@ export default class HomeContainer extends Component {
         
     }
 }
-
-const styles = StyleSheet.create({
-    viewBackground: {
-        backgroundColor: '#256CA0',
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    viewNames: {
-        flex: 3,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: Dimensions.get("window").width * 0.90,
-    },
-    TouchableOpacityNames: {
-        marginTop: 8,
-        justifyContent: 'space-between',
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-        backgroundColor: '#012640',
-        width: Dimensions.get("window").width * 0.85,
-        //height: 192,
-
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-    },
-    item: {
-        flex: 1,
-        padding: 10,
-        fontSize: 18,
-        flexWrap: 'wrap'
-    },
-    itemColor1:{
-        color: '#A8D8EF',
-    },
-    itemColor2:{
-        color: '#9FB8CE',
-        fontWeight: 'bold'
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center'
-      },
-      viewTouchableOpacity:{
-          flexDirection: 'row',
-          justifyContent: 'space-between'
-      },
-      viewToNames:{
-        flex: 3,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-      },
-      viewToRated:{
-        flex: 0.25,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-      },
-      hasTeam:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});

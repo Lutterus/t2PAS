@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import {
-    StyleSheet,
     View,
     Image,
-    Dimensions,
     TouchableOpacity,
     Text,
     Alert,
-    KeyboardAvoidingView
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
-import { TextInput } from "react-native-gesture-handler";
 import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
+var tempstyles = require('../styles/CompositeStyles')
+const styles = tempstyles.UnsubscribedStyle;
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -66,59 +64,3 @@ export default class HomeContainer extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    viewBackground: {
-        backgroundColor: '#256CA0',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-
-    },
-    Image: {
-        flex: 3,
-        width: Dimensions.get("window").width * 0.9,
-        height: Dimensions.get("window").height * 0.1,
-        resizeMode: 'stretch',
-        justifyContent: 'center',
-    },
-    underBackGround: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: Dimensions.get("window").height * 0.08,
-
-    },
-    TouchableOpacity: {
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-
-        width: Dimensions.get("window").width * 0.90,
-        height: Dimensions.get("window").height * 0.07,
-        backgroundColor: '#59BDB5',
-
-        borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-
-    },
-    buttonText: {
-        //alignSelf: 'center',
-        textAlign: "center",
-        paddingBottom: 10,
-        paddingTop: 10,
-        color: "white"
-
-    }
-});

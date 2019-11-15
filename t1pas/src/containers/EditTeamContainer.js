@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
-    StyleSheet,
     View,
-    Dimensions,
     TouchableOpacity,
     Text,
     FlatList,
@@ -12,6 +10,9 @@ import {
 import { NavigationScreenProp, NavigationEvents } from "react-navigation";
 import FetchService from "../services/FetchService";
 import { AsyncStorage } from "react-native";
+var tempstyles = require('../styles/CompositeStyles')
+const stylesNoTeam = tempstyles.EditTeamStyleOutside;
+const styles = tempstyles.EditTeamStyleInside
 
 type Props = {
     navigation: NavigationScreenProp<{}>
@@ -181,127 +182,3 @@ export default class HomeContainer extends Component {
         
     }
 }
-
-const stylesNoTeam = StyleSheet.create({
-    viewWarning:{
-        flex: 3, 
-        flexDirection: 'column', 
-        justifyContent: 'center',
-        width: Dimensions.get("window").width * 0.90,
-
-    },
-    text1:{
-        flex: 1, 
-        fontSize: 30, 
-        flexWrap: 'wrap', 
-        color: '#A8D8EF', 
-        fontWeight: 'bold'
-    },
-    text2: {
-        flex: 1, 
-        fontSize: 30, 
-        flexWrap: 'wrap',
-        color: '#A8D8EF'
-    },
-    cor1: {
-        color:'#59BDB5'
-    },
-    cor2: {
-        color: '#EE4445'
-    }
-});
-
-const styles = StyleSheet.create({
-    viewBackground: {
-        backgroundColor: '#256CA0',
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    viewNames: {
-        flex: 3,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: Dimensions.get("window").width * 0.90,
-    },
-    viewConfigButtons: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    TouchableOpacity: {
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-
-        width: Dimensions.get("window").width * 0.90,
-        height: Dimensions.get("window").height * 0.07,
-
-        borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-    },
-    buttonText: {
-        textAlign: "center",
-        paddingBottom: 10,
-        paddingTop: 10,
-        color: "white"
-
-    },
-    TouchableOpacityAdd: {
-        backgroundColor: '#59BDB5',
-    },
-    TouchableOpacityNames:{
-        marginBottom: 8,
-        backgroundColor: '#012640',
-        justifyContent: 'flex-start',
-        alignSelf: "center",
-        borderBottomWidth: 1,
-        borderColor: '#000',
-
-        width: Dimensions.get("window").width * 0.85,
-        height: 128,
-
-        borderColor: 'black',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 2,
-    },
-    item: {
-        flex: 1,
-        padding: 10,
-        fontSize: 18,
-        flexWrap: 'wrap'
-    },
-    itemColor1:{
-        color: '#A8D8EF',
-    },
-    itemColor2:{
-        color: '#9FB8CE',
-        fontWeight: 'bold'
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center'
-      }
-});
