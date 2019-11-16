@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import FetchService from "../services/FetchService";
 import { CheckBox } from 'react-native-elements';
-import { AsyncStorage } from "react-native";
 import { NavigationScreenProp, NavigationEvents } from "react-navigation";
 var tempstyles = require('../styles/CompositeStyles')
 const styles = tempstyles.ListSubStyle;
@@ -31,8 +30,7 @@ export default class HomeContainer extends Component {
         if (this.state.loading===false) {
             this.setState({ loading: true })
         }
-        var url = "timesInscritos/";
-        const res = await this.FetchService.get(url);
+        const res = await this.FetchService.getAllTeams();
         if (res === false) {
             Alert.alert(
                 "Erro durante a autenticação",
@@ -47,7 +45,7 @@ export default class HomeContainer extends Component {
     }
 
     ButtonMethod = async (item) => {
-        AsyncStorage.setItem("currentStudent", item.time[0].nome);
+        const res = await this.FetchService.setCurrentStudent(item.time[0].nome);
         this.props.navigation.navigate("Evaluate")
     }
 

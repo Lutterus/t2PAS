@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { TextInput } from "react-native-gesture-handler";
-import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
 var tempstyles = require('../styles/CompositeStyles')
 const styles = tempstyles.HomeStyle;
@@ -22,12 +21,11 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = { login: 'Aluno' };
+        this.state = { login: 'Professor' };
     }
 
     loginButtonMethod = async () => {
-        var url = "getByNome/" + this.state.login
-        const res = await this.FetchService.get(url);
+        const res = await this.FetchService.login(this.state.login);
         if (res === false) {
             Alert.alert(
                 "Erro durante a autenticação",
@@ -36,7 +34,7 @@ export default class HomeContainer extends Component {
             );
         } else {
             try {
-                AsyncStorage.setItem("login", this.state.login);
+                this.FetchService.setLogin(this.state.login);
                 if (res[0].tipo === "Professor") {
                     this.props.navigation.navigate("ListSubs");
                 } else {

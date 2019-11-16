@@ -5,6 +5,8 @@ import HomeStyle from '../styles/screenStyles/HomeStyle';
 import ListSubStyle from '../styles/screenStyles/ListSubStyle';
 import SubscribedStyle from '../styles/screenStyles/SubscribedStyle';
 import UnsubscribedStyle from '../styles/screenStyles/UnsubscribedStyle';
+import AvaluateStyle from '../styles/screenStyles/AvaluateStyle';
+import AvaluateStyle2 from '../styles/screenStyles/AvaluateStyle2'
 
 module.exports = {
     AddTeamStyle, 
@@ -13,5 +15,7 @@ module.exports = {
     HomeStyle, 
     ListSubStyle, 
     SubscribedStyle, 
-    UnsubscribedStyle
+    UnsubscribedStyle,
+    AvaluateStyle,
+    AvaluateStyle2
 }

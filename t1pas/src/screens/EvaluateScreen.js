@@ -11,9 +11,11 @@ import {
   ScrollView,
   ActivityIndicator
 } from "react-native";
-import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
 import { CheckBox } from 'react-native-elements';
+var tempstyles = require('../styles/CompositeStyles')
+const styles = tempstyles.AvaluateStyle;
+const styles2 = tempstyles.AvaluateStyle2;
 
 type Props = {
   navigation: NavigationScreenProp<{}>
@@ -67,9 +69,7 @@ class EvaluateScreen extends React.Component<Props, State> {
     };
   };
   saveChanges = async () => {
-    var login = await AsyncStorage.getItem('currentStudent');
-    var url = "avaliacao/" + login;
-    const res = await this.FetchService.postAvaliacao(url, this.state.student);
+    const res = await this.FetchService.avaliate(this.state.student);
     if (res === false) {
       Alert.alert(
         "Erro durante a autenticação",
@@ -83,19 +83,13 @@ class EvaluateScreen extends React.Component<Props, State> {
         [{ text: "Ok", onPress: () => this.props.navigation.navigate("ListSubs") }]
       );
     }
-
-
-
-
   };
 
   componentDidMount = async () => {
     if (this.state.loading === false) {
       this.setState({ loading: true })
     }
-    var value = await AsyncStorage.getItem('currentStudent');
-    var url = "timeInscrito/" + value;
-    const res = await this.FetchService.get(url);
+    const res = await this.FetchService.getSpecificTeam();
     if (res === false) {
       Alert.alert(
         "Erro durante o login",
@@ -481,85 +475,5 @@ class EvaluateScreen extends React.Component<Props, State> {
     }
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  viewBackground: {
-    flex: 1,
-    backgroundColor: '#256CA0',
-    flexDirection: "column",
-    justifyContent: 'space-around',
-  },
-  ScrollView: {
-    marginVertical: Dimensions.get("window").height * 0.03,
-  },
-  buttonEvaluate: {
-    marginTop: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: "center",
-    borderBottomWidth: 1,
-    borderColor: '#000',
-    backgroundColor: '#012640',
-    width: Dimensions.get("window").width * 0.85,
-    height: Dimensions.get("window").height * 0.20,
-
-    borderColor: 'black',
-    borderWidth: 1,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.20,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  viewNameToRated: {
-    flex: 3,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  buttonEvaluateText: {
-    padding: 10,
-    fontSize: 18,
-    flexWrap: 'wrap',
-    color: '#9FB8CE',
-    fontWeight: 'bold',
-  },
-  viewToRated: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-
-});
-
-const styles2 = StyleSheet.create({
-  view: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignSelf: 'center',
-    width: Dimensions.get("window").width * 0.85,
-    backgroundColor: '#012640',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-  },
-  viewText: {
-    flex: 2,
-    flexDirection: 'row',
-    justifyContent: "space-around"
-  },
-  text: {
-    alignSelf: 'center',
-    fontSize: 30,
-    flexWrap: 'wrap',
-    color: '#A8D8EF'
-  }
-});
 
 export default EvaluateScreen;

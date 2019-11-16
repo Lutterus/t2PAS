@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import FetchService from "../services/FetchService";
-import { AsyncStorage } from "react-native";
 import { CheckBox } from 'react-native-elements';
 var tempstyles = require('../styles/CompositeStyles')
 const styles = tempstyles.AddTeamStyle;
@@ -22,16 +21,15 @@ export default class HomeContainer extends Component {
     constructor(props: Props) {
         super(props);
         this.FetchService = new FetchService();
-        this.state = {dados:[], loading: true, pressed: false, selected_category: [], self:[]};
+        this.state = { dados: [], loading: true, pressed: false, selected_category: [], self: [] };
     }
 
     componentWillMount = async () => {
-        if(this.state.loading===false){
-            this.setState({loading: true}) 
+        if (this.state.loading === false) {
+            this.setState({ loading: true })
         }
-        var url = "todosAlunos/";
-        const alunos = await this.FetchService.get(url);
 
+        const alunos = await this.FetchService.getAllStudents();
         if (alunos === false) {
             Alert.alert(
                 "Erro durante a autenticação",
@@ -40,22 +38,22 @@ export default class HomeContainer extends Component {
             );
         } else {
             const students = []
-            var name = await AsyncStorage.getItem('login');
+            var name = await this.FetchService.getLogin();
             alunos.forEach(element => {
-                if(element.nome != name){
+                if (element.nome != name) {
                     students.push(element);
-                }else{
-                    this.setState({self: element}) 
+                } else {
+                    this.setState({ self: element })
                 }
-                            
+
             });
-            this.setState({dados: students}) 
-            this.setState({loading: false}) 
+            this.setState({ dados: students })
+            this.setState({ loading: false })
         }
-        
+
     }
     saveButtonMethod = async () => {
-        const login = await AsyncStorage.getItem('login');
+        const login = await this.FetchService.getLogin();
         var toServer = []
         var invalid = false
         this.state.selected_category.forEach(element => {
@@ -63,32 +61,29 @@ export default class HomeContainer extends Component {
         });
 
         toServer.forEach(element => {
-            if(element.estaEmTime===true){
+            if (element.estaEmTime === true) {
                 invalid = true
             }
         });
 
-        if(invalid===true){
+        if (invalid === true) {
             Alert.alert(
                 "Erro",
                 "Você adicionou um usuário que já está em outro time. Remova-o e continue",
                 [{ text: "OK" }]
             );
-        }else{
-            var url = "myTime/" + login;
-            const res = await this.FetchService.get(url);
+        } else {
+            const res = await this.FetchService.getTeam();
 
-            if(res.length!=0){
+            if (res.length != 0) {
                 res[0].time.forEach(element => {
                     toServer.push(element)
                 });
-            }else{
+            } else {
                 toServer.push(this.state.self)
             }
 
-            url = "editTime/" + login;
-            const res2 = await this.FetchService.postTime(url, toServer);
-
+            const res2 = await this.FetchService.editTime(toServer);
             if (res === false || res2 === false) {
                 Alert.alert(
                     "Erro durante a autenticação",
@@ -96,47 +91,47 @@ export default class HomeContainer extends Component {
                     [{ text: "OK" }]
                 );
             } else {
-                this.props.navigation.navigate("EditTeam")            
+                this.props.navigation.navigate("EditTeam")
             }
-        }      
-       
+        }
+
     };
 
     _handleCategorySelect = index => {
-
         this.selectedArray = this.state.selected_category;
-        
+
         if (this.selectedArray.indexOf(index) < 0) {
-          this.selectedArray.push(index);
+            this.selectedArray.push(index);
         } else {
-          this.selectedArray.splice(this.selectedArray.indexOf(index), 1);
+            this.selectedArray.splice(this.selectedArray.indexOf(index), 1);
         }
-        
-        this.setState({ selected_category: this.selectedArray });};
+
+        this.setState({ selected_category: this.selectedArray });
+    };
 
     render() {
-        if(this.state.loading===true){
-            return(
+        if (this.state.loading === true) {
+            return (
                 <View style={[styles.container]}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                    <ActivityIndicator size="large" color="#0000ff" />
                 </View>
             );
-            
-        }else{
+
+        } else {
             return (
                 <View style={styles.viewBackground}>
-                    <View style={{flex: 0.35 }}>
-    
+                    <View style={{ flex: 0.35 }}>
+
                     </View>
-    
+
                     <View style={styles.viewNames}>
                         <FlatList style={styles.flatlist}
                             data={this.state.dados}
                             extraData={this.state}
                             ref={e => (this.items = e)}
                             renderItem={({ item, index }) => (
-                                <TouchableOpacity 
-                                style={[styles.TouchableOpacityNames,
+                                <TouchableOpacity
+                                    style={[styles.TouchableOpacityNames,
                                     this.state.selected_category.indexOf(index.toString()) >= 0
                                         ? styles.Pressed
                                         : styles.NotPressed
@@ -164,14 +159,14 @@ export default class HomeContainer extends Component {
                                                 />
                                             </View>
                                         }
-                                        
-                                    </View>                                   
-                                    
+
+                                    </View>
+
                                 </TouchableOpacity>
-                            
+
                             )}
                             keyExtractor={(item, index) => index.toString()}
-                        
+
                         />
                     </View>
                     <View style={styles.viewConfigButtons}>
@@ -184,6 +179,6 @@ export default class HomeContainer extends Component {
                 </View>
             );
         }
-        
+
     }
 }

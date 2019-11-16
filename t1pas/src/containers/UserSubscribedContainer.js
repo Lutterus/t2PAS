@@ -7,7 +7,6 @@ import {
     Alert,
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
-import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
 var tempstyles = require('../styles/CompositeStyles')
 const styles = tempstyles.SubscribedStyle;
@@ -41,9 +40,7 @@ export default class HomeContainer extends Component {
     };
 
     cancelSub = async () => {
-        var value = await AsyncStorage.getItem('login');
-        var url = "desInscrever/" + value;
-        const res = await this.FetchService.get(url);
+        const res = await this.FetchService.removeInscricao();
         if (res === false) {
             Alert.alert(
                 "Erro durante a autenticação",

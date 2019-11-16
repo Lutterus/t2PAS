@@ -7,7 +7,6 @@ import {
     Alert,
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
-import { AsyncStorage } from "react-native";
 import FetchService from "../services/FetchService";
 var tempstyles = require('../styles/CompositeStyles')
 const styles = tempstyles.UnsubscribedStyle;
@@ -23,10 +22,7 @@ export default class HomeContainer extends Component {
     }
 
     ButtonMethod = async () => {
-        var value = await AsyncStorage.getItem('login');
-        var url = "inscrever/" + value;
-        const res = await this.FetchService.get(url);
-
+        const res = await this.FetchService.addInscricao();
         if (res === false) {
             Alert.alert(
                 "Erro durante a autenticação",
@@ -38,10 +34,8 @@ export default class HomeContainer extends Component {
                 "Tudo pronto!",
                 "Seu processo de inscrição já começou! Aproveite e faça a sugestão de um time para você",
                 [{ text: "OK", onPress: () => this.props.navigation.navigate("UserSubscribed") }]
-
             );
         }
-
     };
 
     render() {

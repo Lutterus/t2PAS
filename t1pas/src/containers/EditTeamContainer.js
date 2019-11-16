@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { NavigationScreenProp, NavigationEvents } from "react-navigation";
 import FetchService from "../services/FetchService";
-import { AsyncStorage } from "react-native";
 var tempstyles = require('../styles/CompositeStyles')
 const stylesNoTeam = tempstyles.EditTeamStyleOutside;
 const styles = tempstyles.EditTeamStyleInside
@@ -29,9 +28,8 @@ export default class HomeContainer extends Component {
         if(this.state.loading===false){
             this.setState({loading: true}) 
         }
-        var value = await AsyncStorage.getItem('login');
-        var url = "myTime/" + value;
-        const res = await this.FetchService.get(url);
+        const res = await this.FetchService.getTeam();
+        const value = await this.FetchService.getLogin();
         if (res === false) {
             Alert.alert(
                 "Erro durante a autenticação",
@@ -60,17 +58,14 @@ export default class HomeContainer extends Component {
         
     }
     saveButtonMethod = async () => {
-        var login = await AsyncStorage.getItem('login');
-        var url = "editTime/" + login;
-        var url2 = "cleanTime/" + login
         var toServer = []
         if(this.state.dados.length>0){
             toServer = this.state.dados
         }
         toServer.push(this.state.self)
 
-        const res2 = await this.FetchService.get(url2);
-        const res = await this.FetchService.postTime(url, toServer);
+        const res2 = await this.FetchService.cleanTime();
+        const res = await this.FetchService.editTime(toServer);
 
         if (res === false || res2 === false) {
             Alert.alert(
